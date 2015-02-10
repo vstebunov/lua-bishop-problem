@@ -25,11 +25,11 @@ repeat
 	local new_turns = get_new_turns(state[2], state[3], state[1])
 	for _, turn in pairs(new_turns) do 
 		local state_all, state_black, state_white = set_new_turn(turn, state[1], state[2], state[3])	
-		if (not is_closed_state(closed,{state_all, state_black, state_white})) then 
+		if (not is_closed_state(closed,{state_all, state_black, state_white}) and state[6] + 1 < 62) then 
 			table.insert(new_states, {state_all, state_black, state_white, state, turn, state[6] + 1, in_b + in_w})
 		end
 	end
-	table.sort(new_states, function(as, bs) return (as[7] + as[6] / 61 ) < (bs[7] + bs[6] / 61 ) end)
+	table.sort(new_states, function(as, bs) return (as[7]) > (bs[7]) end)
 until (#new_states <= 0)
 print(string.format("elapsed time: %.2f\n", os.clock() - start_time))
 local turns = {}
