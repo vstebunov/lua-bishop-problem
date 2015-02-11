@@ -1,13 +1,29 @@
 require "utils"
+require "gd"
 local gblack = {{0,3}, {1,2}, {2,1}, {3,0}};
 local gwhite = {{4,7}, {5,6}, {6,5}, {7,4}};
 local gall = {{1,4}, {2,3}, {2,5}, {3,2}, {3,4}, {3,6}, {4,1}, {4,3}, {4,5}, {5,2}, {5,4}, {6,3}};
 
---начало
---делаем поиск в ширину
+function draw_all()
+	local img = gd.createTrueColor(10 * 2 + 5 * 20, 10 * 2 + 4 * 20)
+	local black_color = img:colorAllocate(0,0,0)
+	local white_color = img:colorAllocate(255,255,255)
+	img:fill(0,0,white_color)
+	img:rectangle(10,10,10 + 5 * 20,10 + 4 * 20, black_color)
+	local offset = 0
+	for j = 0,3 do
+		for i = 0,5 - offset * 2,2 do 
+			img:filledRectangle(10 + (20 * i) + (20 * offset),10 + (20 * j),10 +(20 * i) + (20 * offset) + 20,10 + 20 + (20 *j),black_color)
+		end
+		if offset == 0 then offset = 1 else offset = 0 end
+	end
+	img:png("output.png")
+end
+
+draw_all() 
+exit(0)
+
 local closed = {}
---перебираем все текущие вершины 
---очереди
 local start_time = os.clock()
 --[[				all    black   white   state turn level(h(x)) g(x)]]--
 local new_states = {{gall, gblack, gwhite, nil,  nil, 0,         0}}
@@ -25,7 +41,7 @@ repeat
 	local new_turns = get_new_turns(state[2], state[3], state[1])
 	for _, turn in pairs(new_turns) do 
 		local state_all, state_black, state_white = set_new_turn(turn, state[1], state[2], state[3])	
-		if (not is_closed_state(closed,{state_all, state_black, state_white}) and state[6] + 1 < 62) then 
+		if (not is_closed_state(closed,{state_all, state_black, state_white}) and state[6] + 1 < 64) then 
 			table.insert(new_states, {state_all, state_black, state_white, state, turn, state[6] + 1, in_b + in_w})
 		end
 	end
