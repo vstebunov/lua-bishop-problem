@@ -152,6 +152,19 @@ function get_new_turns(black, white, all)
 	for _, p in ipairs(new_turn) do print_turn(p) end
 	io.read();
 	]]--
+	--i find bug in forming turns its silly fix
+	for ii, i in ipairs(new_turn) do
+		for ij, j in ipairs(new_turn) do
+			if (ii ~= ij and i[2][1] == j[2][1] and i[2][2] == j[2][2] and i[1][1] == j[1][1] ) then
+				if i[1][2] < j[1][2] then
+					table.remove(new_turn,ii)
+				else 
+					table.remove(new_turn,ij)
+				end
+			end
+		end
+	end
+
 	return new_turn;
 end
 
