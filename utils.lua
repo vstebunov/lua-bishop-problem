@@ -155,16 +155,42 @@ function get_new_turns(black, white, all)
 	--i find bug in forming turns its silly fix
 	for ii, i in ipairs(new_turn) do
 		for ij, j in ipairs(new_turn) do
-			if (ii ~= ij and i[2][1] == j[2][1] and i[2][2] == j[2][2] and i[1][1] == j[1][1] ) then
-				if i[1][2] < j[1][2] then
-					table.remove(new_turn,ii)
-				else 
-					table.remove(new_turn,ij)
+			if (ii ~= ij and i[2][1] == j[2][1] and i[2][2] == j[2][2] and (i[1][1] == j[1][1] or i[1][2] == j[1][2])) then
+				if (i[1][2] == j[1][2]) then
+					if (i[2][1] < i[1][1] and i[2][1] < j[1][1]) then
+						if (i[1][1] < j[1][1]) then
+							table.remove(new_turn, ij)
+						else
+							table.remove(new_turn, ii)
+						end
+					end
+					if (i[2][1] > i[1][1] and i[2][1] > j[1][1]) then
+						if (i[1][1] > j[1][1]) then
+							table.remove(new_turn, ij)
+						else
+							table.remove(new_turn, ii)
+						end
+					end
+				end
+				if (i[1][1] == j[1][1]) then
+					if (i[2][2] < i[1][2] and i[2][2] < j[1][2]) then
+						if (i[1][2] < j[1][2]) then
+							table.remove(new_turn, ij)
+						else
+							table.remove(new_turn, ii)
+						end
+					end
+					if (i[2][2] > i[1][2] and i[2][2] > j[1][2]) then
+						if (i[1][2] > j[1][2]) then
+							table.remove(new_turn, ij)
+						else
+							table.remove(new_turn, ii)
+						end
+					end
 				end
 			end
 		end
 	end
-
 	return new_turn;
 end
 
